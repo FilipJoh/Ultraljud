@@ -9,8 +9,8 @@ f=PostRF.Signal;
 %
 % *Equiripple Design*
 
-Fstop = 100;
-Fpass = 120;
+Fstop = 10;
+Fpass = 40;
 Astop = 65;
 Apass = 0.1;
 Fs = 1e3;
