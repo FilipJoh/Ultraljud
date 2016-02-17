@@ -20,25 +20,13 @@ data = struct2cell(load('PreRF_BildA.mat'));
 %   'DesignMethod','equiripple','SampleRate',Fs);
 
 
-%% Highpass FIR Filters 
-%
-% *Equiripple Design*
 
-% Fstop = 10; %60
-% Fpass = 20; %120
-% Astop = 65;
-% Apass = 0.1;
-% Fs = 1e3;
-% d = designfilt('highpassfir', 'StopbandFrequency', Fstop, ...
-%                'PassbandFrequency', Fpass, 'StopbandAttenuation', ...
-%                Astop, 'PassbandRipple', Apass, 'SampleRate', Fs, ...
-%                'DesignMethod', 'equiripple');
-
-%fvtool(d)
-
+%% load in correct data. 
 
 
 %% butterworth filter
+load('Matrices');
+imagProc=BeforeFiltering;
 
  
 
@@ -46,27 +34,45 @@ data = struct2cell(load('PreRF_BildA.mat'));
 
 
 %% plot stuff
+lowest=1000;
+M=[];
+Mov=[];
+for i=1:32
 image = zeros(2048,128); 
-image = addUltraEchoes_2(data,1);
+image = addUltraEchoes_2(data,1,i);
 
 image = filtfilt(a,b,double(image));
 image= abs(hilbert(image));
 
+
 %M=plotAllSubimages(data)
+
+imagProc=filtfilt(a,b,double(imagProc));
+imagProc= abs(hilbert(imagProc));
 
 
 %figure;
+figure;
+diff=abs(imagProc-image);
+ if max(max(diff))<lowest
+     lowest=max(max(diff));
+     lowestindex=i;
+ end
+ imagesc(diff);
+ title('difference')
+  M=[M getframe];
+  close all
 
-%diff=ima;%-image;
-
-% imagesc(diff);
-% colormap gray
+ 
 figure;
 
 imagesc(image);
 colormap gray;
-
-%figure;
+title('Our image')
+ Mov=[Mov getframe];
+ close all;
+ end
+figure;
 %movie(M,10);
 
 %axis equal

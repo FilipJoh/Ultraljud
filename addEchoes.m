@@ -17,8 +17,9 @@ for i = 1:nmbEl
     for j = 1:nmbSamp
         nbrOfElements=ceil(j/64);
         for k = 1:nbrOfElements
-            dt = sqrt(((elWidth*(k-1))/c)^2 + (deadZone/c+sampleLength*j)^2);           %time from echo to element k
+            dt = sqrt(((elWidth*(k-1))/c)^2 + (2*deadZone/c+sampleLength*j)^2);           %time from echo to element k
             inc = floor(dt/sampleLength);
+%             app = apperature([W(32+k)*signal(inc,32+k,i) W(33-k)*signal(inc,33-k,i)]);
             image(inc,i) = image(inc,i) + W(32+k)*signal(inc,32+k,i) + W(33-k)*signal(inc,33-k,i);
         end
     end
